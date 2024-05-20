@@ -4,9 +4,42 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OnlineShop"
+        xmlns:vm="clr-namespace:OnlineShop.ViewModel"
+        xmlns:views="clr-namespace:OnlineShop.View"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <vm:MainWindowVM/>
+    </Window.DataContext>
+    <Window.Resources>
+        <DataTemplate x:Name="EnteranceView" DataType="{x:Type vm:EnteranceVM}">
+            <views:EnteranceView DataContext="{Binding}"/>
+        </DataTemplate>
+    </Window.Resources>
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TabControl Margin="5" Grid.Column="0" Grid.Row="0"
+                    Visibility="{Binding MainWindowsVisibility}">
+            <TabItem Header="Покупатели">
+                <DataGrid Margin="2" ItemsSource="{Binding Customers}"
+                          AutoGenerateColumns="True" CanUserAddRows="True">
+
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Заказы">
+                <DataGrid Margin="2" ItemsSource="{Binding Orders}"
+                          AutoGenerateColumns="True" CanUserAddRows="True">
+
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+        <ContentControl Grid.Row="0" Grid.Column="0"
+                        Content="{Binding EnteranceVM}"/>
     </Grid>
+    
 </Window>

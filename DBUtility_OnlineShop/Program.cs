@@ -38,6 +38,12 @@ try
         string query = @"CREATE SCHEMA OnlineShopDB";
         MySqlCommand command = new(query, connectionServer);
         await command.ExecuteNonQueryAsync();
+
+        command.CommandText = @"CREATE USER 'worker'@'localhost' identified by '12345'";
+        await command.ExecuteNonQueryAsync();
+
+        command.CommandText = @"GRANT SELECT,UPDATE,DELETE,INSERT ON onlineshopdb.* TO 'worker'@'localhost'";
+        await command.ExecuteNonQueryAsync();
     }
     //Создание таблицы и наполнение в MySQL
     using (MySqlConnection connection = new(mySqlConnectionStringBuilder.ConnectionString))
@@ -103,6 +109,20 @@ try
         await sqlConnectionServer.OpenAsync();
         string query = @"CREATE DATABASE OnlineShop";
         SqlCommand command = new(query, sqlConnectionServer);
+        await command.ExecuteNonQueryAsync();
+
+        command.CommandText = @"CREATE LOGIN worker WITH PASSWORD = '12345'";
+        await command.ExecuteNonQueryAsync();
+
+        command.CommandText = @"USE OnlineShop;
+                                CREATE USER worker FOR LOGIN worker;";
+        await command.ExecuteNonQueryAsync();
+
+        command.CommandText = @"USE OnlineShop;
+                                GRANT SELECT TO worker;
+                                GRANT INSERT TO worker;
+                                GRANT DELETE TO worker;
+                                GRANT UPDATE TO worker;";
         await command.ExecuteNonQueryAsync();
     }
     //Создание таблици и наполнение в MSSQLLocalDB
