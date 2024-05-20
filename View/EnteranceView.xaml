@@ -5,11 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:OnlineShop.View"
              xmlns:vm="clr-namespace:OnlineShop.ViewModel"
+             d:DataContext="{d:DesignInstance Type=vm:EnteranceVM}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.DataContext>
-        <vm:EnteranceVM/>
-    </UserControl.DataContext>
     <Grid>
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center"
                     VerticalAlignment="Center">

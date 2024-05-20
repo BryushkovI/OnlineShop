@@ -33,12 +33,21 @@ namespace OnlineShop.ViewModel
         void OnLoginExecuted(object p)
         {
             DataProvider dataProvider = new DataProvider(_username, _password);
-            bool correct = dataProvider.GetConnectionStatus();
+            if (dataProvider.IsConnected()) OnEnter();
+
         }
         bool CanLoginExecute(object p) => !string.IsNullOrWhiteSpace(_username) && !string.IsNullOrWhiteSpace(_password);
         public EnteranceVM()
         {
             Login = new LambdaCommand(OnLoginExecuted, CanLoginExecute);
+            
+        }
+
+        public delegate void EnterHandler();
+        public event EnterHandler Enter;
+        void OnEnter()
+        {
+            Enter?.Invoke();
         }
     }
 }

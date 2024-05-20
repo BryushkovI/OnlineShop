@@ -33,7 +33,7 @@ namespace OnlineShop.Services
             };
         }
 
-        public bool GetConnectionStatus()
+        public bool IsConnected()
         {
             bool result;
 

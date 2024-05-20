@@ -15,8 +15,12 @@ namespace OnlineShop.ViewModel
         DataProvider dataProvider;
 
 
-
-        public EnteranceVM EnteranceVM { get; set; }
+        EnteranceVM _enteranceVM;
+        public EnteranceVM EnteranceVM
+        {
+            get => _enteranceVM;
+            set => Set(ref _enteranceVM, value);
+        }
 
         #region Таблицы и строки
         Customer _customer;
@@ -56,9 +60,25 @@ namespace OnlineShop.ViewModel
             set => Set(ref _mainWindowsVisibility, value);
         }
 
+        Visibility _enteranceVisibility = Visibility.Visible;
+        public Visibility EnteranceVisibility
+        {
+            get => _enteranceVisibility;
+            set => Set(ref _enteranceVisibility, value);
+        }
+
+
         public MainWindowVM()
         {
-            EnteranceVM = new EnteranceVM();
+           _enteranceVM = new EnteranceVM();
+           _enteranceVM.Enter += Login;
+           OnPropertyChanged(nameof(EnteranceVM));
+        }
+
+        private void Login()
+        {
+            MainWindowsVisibility = Visibility.Visible;
+            EnteranceVisibility = Visibility.Collapsed;
         }
     }
 }

@@ -39,7 +39,8 @@
             </TabItem>
         </TabControl>
         <ContentControl Grid.Row="0" Grid.Column="0"
-                        Content="{Binding EnteranceVM}"/>
+                        Content="{Binding EnteranceVM}"
+                        Visibility="{Binding EnteranceVisibility}"/>
     </Grid>
     
 </Window>
