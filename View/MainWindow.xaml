@@ -23,24 +23,40 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TabControl Margin="5" Grid.Column="0" Grid.Row="0"
-                    Visibility="{Binding MainWindowsVisibility}">
-            <TabItem Header="Покупатели">
-                <DataGrid Margin="2" ItemsSource="{Binding Customers}"
-                          AutoGenerateColumns="True" CanUserAddRows="True">
+        <DockPanel Visibility="{Binding MainWindowsVisibility}">
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="Правка">
+                    <MenuItem Header="Сохранить"/>
+                    <MenuItem Header="Отменить"/>
+                </MenuItem>
+            </Menu>
+            <ListBox DockPanel.Dock="Bottom" Height="150"
+                     ItemsSource="{Binding Logs}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" Margin="2"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <TabControl Margin="5" Grid.Column="0" Grid.Row="0">
+                <TabItem Header="Покупатели">
+                    <DataGrid Margin="2" ItemsSource="{Binding DataTableCustomers}"
+                              AutoGenerateColumns="True" CanUserAddRows="True" VerticalScrollBarVisibility="Auto">
 
-                </DataGrid>
-            </TabItem>
-            <TabItem Header="Заказы">
-                <DataGrid Margin="2" ItemsSource="{Binding Orders}"
-                          AutoGenerateColumns="True" CanUserAddRows="True">
+                    </DataGrid>
+                </TabItem>
+                <TabItem Header="Заказы">
+                    <DataGrid Margin="2" ItemsSource="{Binding DataTableOrders}"
+                              AutoGenerateColumns="True" CanUserAddRows="True" VerticalScrollBarVisibility="Auto">
 
-                </DataGrid>
-            </TabItem>
-        </TabControl>
+                    </DataGrid>
+                </TabItem>
+            </TabControl>
+            
+        </DockPanel>
+        
         <ContentControl Grid.Row="0" Grid.Column="0"
-                        Content="{Binding EnteranceVM}"
-                        Visibility="{Binding EnteranceVisibility}"/>
+                        Content="{Binding EnteranceVM}"/>
     </Grid>
     
 </Window>

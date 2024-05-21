@@ -14,6 +14,7 @@ namespace OnlineShop.ViewModel
 {
     internal class EnteranceVM : ViewModel
     {
+        public DataProvider dataProvider;
         string _username;
         public string Username
         {
@@ -32,7 +33,7 @@ namespace OnlineShop.ViewModel
         public ICommand Login { get; }
         void OnLoginExecuted(object p)
         {
-            DataProvider dataProvider = new DataProvider(_username, _password);
+            dataProvider = new DataProvider(_username, _password);
             if (dataProvider.IsConnected()) OnEnter();
 
         }

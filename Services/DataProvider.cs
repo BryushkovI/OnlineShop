@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using MySql.Data.MySqlClient;
+using System.Collections.ObjectModel;
+using OnlineShop.Model;
+using System.Data;
 
 namespace OnlineShop.Services
 {
@@ -12,6 +15,12 @@ namespace OnlineShop.Services
     {
         private readonly MySqlConnectionStringBuilder mySqlConnectionStringBuilder;
         private readonly SqlConnectionStringBuilder sqlConnectionStringBuilder;
+
+        public string[] GetConnectionString() => new string[]
+        {
+            mySqlConnectionStringBuilder.ConnectionString,
+            sqlConnectionStringBuilder.ConnectionString
+        };
 
         public DataProvider(string username, string password)
         {
@@ -49,6 +58,44 @@ namespace OnlineShop.Services
             sqlConnection?.Close();
 
             return result;
+        }
+
+        public DataTable GetOrders()
+        {
+            using (SqlConnection connection = new SqlConnection(sqlConnectionStringBuilder.ConnectionString))
+            {
+                string query = @"SELECT * FROM Orders";
+                using (SqlDataAdapter dataAdapter = new SqlDataAdapter(query,connection))
+                {
+                    DataTable dataTable = new DataTable();
+                    DataSet dataSet = new DataSet();
+
+                    dataAdapter.Fill(dataSet, "Orders");
+                    dataTable = dataSet.Tables["Orders"];
+                    return dataTable;
+                }
+
+            }
+            
+        }
+
+        public DataTable GetCustomers()
+        {
+            using (MySqlConnection connection = new MySqlConnection(mySqlConnectionStringBuilder.ConnectionString))
+            {
+                string query = @"SELECT * FROM Users";
+                using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(query, connection))
+                {
+                    DataTable dataTable = new DataTable();
+                    DataSet dataSet = new DataSet();
+
+                    dataAdapter.Fill(dataSet, "Customers");
+                    dataTable = dataSet.Tables["Customers"];
+                    return dataTable;
+                }
+
+            }
+
         }
     }
 }
