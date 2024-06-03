@@ -15,14 +15,14 @@ namespace OnlineShop.ViewModel
     internal class EnteranceVM : ViewModel
     {
         public DataProvider dataProvider;
-        string _username;
+        string _username = "worker";
         public string Username
         {
             get => _username;
             set => Set(ref  _username, value);
         }
 
-        string _password;
+        string _password = "12345";
         public string Password
         {
             private get => _password;

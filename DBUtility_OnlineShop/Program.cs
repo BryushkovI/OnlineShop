@@ -48,7 +48,7 @@ try
     //Создание таблицы и наполнение в MySQL
     using (MySqlConnection connection = new(mySqlConnectionStringBuilder.ConnectionString))
     {
-        List<Costumer> costumers =
+        List<Customer> customers =
         [
             new()
             {
@@ -77,20 +77,19 @@ try
         ];
         await connection.OpenAsync();
         string query = @"CREATE TABLE Users
-                     ( Id INT NOT NULL AUTO_INCREMENT,
-                       Email VARCHAR(30) NOT NULL,
+                     ( Email VARCHAR(30) NOT NULL,
                        LastName NVARCHAR(20) NOT NULL,
                        FirstName NVARCHAR(20) NOT NULL,
                        MiddleName NVARCHAR(20),
                        Phone VARCHAR(20),
-                       PRIMARY KEY (Id, Email) )";
+                       PRIMARY KEY (Email) )";
 
         MySqlCommand command = new(query, connection);
         await command.ExecuteNonQueryAsync();
 
         command.CommandText = @"INSERT Users(Email, LastName, FirstName, MiddleName, Phone)
                             VALUES (@Email, @LastName, @FirstName, @MiddleName, @Phone)";
-        foreach (var item in costumers)
+        foreach (var item in customers)
         {
             command.Parameters.Clear();
             command.Parameters.AddWithValue("@Email", item.Email);
@@ -198,7 +197,7 @@ struct Order
     public string Nameing { get; set; }
 }
 
-struct Costumer
+struct Customer
 {
     public string Email { get; set; }
     public string LastName { get; set; }
