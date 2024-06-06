@@ -5,7 +5,11 @@ VisualStudioVersion = 17.9.34902.65
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShop", "OnlineShop.csproj", "{14A938D0-B729-43F4-A864-7BDC6BF63513}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBUtility_OnlineShop", "DBUtility_OnlineShop\DBUtility_OnlineShop.csproj", "{A6C17052-3984-4270-9674-29AE6F83E409}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DBUtility_OnlineShop", "DBUtility_OnlineShop\DBUtility_OnlineShop.csproj", "{A6C17052-3984-4270-9674-29AE6F83E409}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShop_EFCore", "..\OnlineShop_EFCore\OnlineShop_EFCore.csproj", "{FD5BD9AC-7090-4191-9E7F-7E8E960FD504}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShop_CL", "..\OnlineShop_CL\OnlineShop_CL.csproj", "{B9B66ED5-B98D-404F-8059-8007766213A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{A6C17052-3984-4270-9674-29AE6F83E409}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6C17052-3984-4270-9674-29AE6F83E409}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6C17052-3984-4270-9674-29AE6F83E409}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD5BD9AC-7090-4191-9E7F-7E8E960FD504}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD5BD9AC-7090-4191-9E7F-7E8E960FD504}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD5BD9AC-7090-4191-9E7F-7E8E960FD504}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD5BD9AC-7090-4191-9E7F-7E8E960FD504}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9B66ED5-B98D-404F-8059-8007766213A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9B66ED5-B98D-404F-8059-8007766213A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9B66ED5-B98D-404F-8059-8007766213A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9B66ED5-B98D-404F-8059-8007766213A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
