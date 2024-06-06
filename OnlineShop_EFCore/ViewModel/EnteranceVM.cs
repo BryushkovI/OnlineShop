@@ -12,16 +12,16 @@ namespace OnlineShop_EFCore.ViewModel
 {
     internal class EnteranceVM : ViewModel
     {
-        public DataProvider? dataProvider; 
-        string? _username;
-        public string? Username
+        public DataProvider dataProvider; 
+        string _username;
+        public string Username
         {
             get => _username;
             set => Set(ref  _username, value);
         }
 
-        string? _password;
-        public string? Password
+        string _password;
+        public string Password
         {
             private get => _password;
             set => Set(ref _password, value);
@@ -31,9 +31,11 @@ namespace OnlineShop_EFCore.ViewModel
         public ICommand Login { get; }
         void OnLoginExecuted(object p)
         {
-            dataProvider = new DataProvider(_username, _password);
-            if (dataProvider.IsConnected()) OnEnter();
-
+            //dataProvider = new DataProvider(_username, _password);
+            //if (dataProvider.IsConnected())
+            //{
+                OnEnter();
+            //}
         }
         bool CanLoginExecute(object p) => !string.IsNullOrWhiteSpace(_username) && !string.IsNullOrWhiteSpace(_password);
         public EnteranceVM()
@@ -43,7 +45,7 @@ namespace OnlineShop_EFCore.ViewModel
         }
 
         public delegate void EnterHandler();
-        public event EnterHandler? Enter;
+        public event EnterHandler Enter;
         void OnEnter()
         {
             Enter?.Invoke();

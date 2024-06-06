@@ -7,8 +7,16 @@ using System.Threading.Tasks;
 
 namespace OnlineShop_CL.Model
 {
-    internal class Customer : INotifyPropertyChanged
+    public class Customer : INotifyPropertyChanged
     {
+        public Customer()
+        {
+                
+        }
+
+        int _id;
+        public int Id { get => _id; set => _id = value; }
+
         string _firstName;
         public string FirstName
         {
@@ -42,8 +50,15 @@ namespace OnlineShop_CL.Model
         public event PropertyChangedEventHandler PropertyChanged;
     }
 
-    internal class Order : INotifyPropertyChanged
+    public class Order : INotifyPropertyChanged
     {
+        public Order()
+        {
+            
+        }
+        int _id;
+        public int Id { get => _id; set => _id = value; }
+
         string _email;
         public string Email
         {

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using Microsoft.EntityFrameworkCore;
 using OnlineShop_CL;
 using OnlineShop_CL.Services;
 
@@ -14,6 +16,7 @@ namespace OnlineShop_EFCore.ViewModel
 {
     internal class MainWindowVM : ViewModel
     {
+        Context context;
         DataProvider dataProvider;
 
         readonly ILoggable loggable;
@@ -196,7 +199,7 @@ namespace OnlineShop_EFCore.ViewModel
                 loggable.OnLog(message, new string[] { });
                 GetOrders();
             }
-        } 
+        }
         #endregion
 
         private void Loggable_Log(string message, string[] args)
@@ -208,8 +211,9 @@ namespace OnlineShop_EFCore.ViewModel
         private void Login()
         {
             MainWindowsVisibility = Visibility.Visible;
-            dataProvider = EnteranceVM.dataProvider;
-            loggable.OnLog("Подключено со строкой: {0}\n {1}", dataProvider.GetConnectionString());
+            context = new();
+            dataProvider = new(context);
+            loggable.OnLog("Подключено со строкой: {0}", [context.Database.GetConnectionString()]);
             EnteranceVM = null;
             _dataTableOrders = dataProvider.GetOrders();
             _dataTableNewOrder = _dataTableOrders.Clone();
@@ -219,26 +223,28 @@ namespace OnlineShop_EFCore.ViewModel
             _dataTableNewCutomer = _dataTableCustomers.Clone();
             OnPropertyChanged(nameof(DataTableCustomers));
             OnPropertyChanged(nameof(DataTableNewCutomer));
-            DataTableCustomers.RowChanged += DataTableCustomers_RowChanged;
-            DataTableNewCutomer.RowChanged += DataTableNewCutomer_RowAdded;
-            DataTableOrders.RowChanged += DataTableOrders_RowChanged;
-            DataTableNewOrder.RowChanged += DataTableNewOrder_RowAdded;
-            DataTableCustomers.RowDeleting += DataTableCustomers_RowChanged;
-            DataTableOrders.RowDeleting += DataTableOrders_RowChanged;
+            //DataTableCustomers.RowChanged += DataTableCustomers_RowChanged;
+            //DataTableNewCutomer.RowChanged += DataTableNewCutomer_RowAdded;
+            //DataTableOrders.RowChanged += DataTableOrders_RowChanged;
+            //DataTableNewOrder.RowChanged += DataTableNewOrder_RowAdded;
+            //DataTableCustomers.RowDeleting += DataTableCustomers_RowChanged;
+            //DataTableOrders.RowDeleting += DataTableOrders_RowChanged;
         }
         void GetOrders()
         {
-            DataTableOrders = dataProvider.GetOrders();
-            DataTableOrders.RowChanged += DataTableOrders_RowChanged;
-            DataTableOrders.RowDeleting += DataTableOrders_RowChanged;
+            //DataTableOrders = dataProvider.GetOrders();
+            //DataTableOrders.RowChanged += DataTableOrders_RowChanged;
+            //DataTableOrders.RowDeleting += DataTableOrders_RowChanged;
         }
 
         void GetCustomers()
         {
-            DataTableCustomers = dataProvider.GetCustomers();
-            DataTableCustomers.RowChanged += DataTableCustomers_RowChanged;
-            DataTableCustomers.RowDeleting += DataTableCustomers_RowChanged;
+            //DataTableCustomers = dataProvider.GetCustomers();
+            //DataTableCustomers.RowChanged += DataTableCustomers_RowChanged;
+            //DataTableCustomers.RowDeleting += DataTableCustomers_RowChanged;
         }
+
+
 
     }
 }

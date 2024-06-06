@@ -7,212 +7,76 @@ using System.Data.SqlClient;
 using MySql.Data.MySqlClient;
 using System.Collections.ObjectModel;
 using System.Data;
+using OnlineShop_CL.Services;
+using System.Reflection;
+using OnlineShop_CL.Model;
 
 namespace OnlineShop_CL.Services
 {
     public class DataProvider
     {
-        private readonly MySqlConnectionStringBuilder mySqlConnectionStringBuilder;
-        private readonly SqlConnectionStringBuilder sqlConnectionStringBuilder;
-
-        public string[] GetConnectionString() => new string[]
+        Context _context;
+        public DataProvider(Context context)
         {
-            mySqlConnectionStringBuilder.ConnectionString,
-            sqlConnectionStringBuilder.ConnectionString
-        };
-
-        public DataProvider(string username, string password)
-        {
-            mySqlConnectionStringBuilder = new MySqlConnectionStringBuilder()
-            {
-                Server = "127.0.0.1",
-                Port = 3306,
-                UserID = username,
-                Password = password,
-                Database = "onlineshopdb"
-            };
-            sqlConnectionStringBuilder = new SqlConnectionStringBuilder()
-            {
-                DataSource = @"(localdb)\MSSQLLocalDB",
-                InitialCatalog = "OnlineShop",
-                IntegratedSecurity = false,
-                Password = password,
-                UserID = username
-            };
+            _context = context;
         }
-
-        public bool IsConnected()
-        {
-            bool result;
-
-            MySqlConnection mysqlconnection = new MySqlConnection(mySqlConnectionStringBuilder.ConnectionString);
-            mysqlconnection.Open();
-            
-            SqlConnection sqlConnection = new SqlConnection(sqlConnectionStringBuilder.ConnectionString);
-            sqlConnection.Open();
-
-            result = mysqlconnection.State == System.Data.ConnectionState.Open && sqlConnection.State == System.Data.ConnectionState.Open;
-
-            mysqlconnection?.Close();
-            sqlConnection?.Close();
-
-            return result;
-        }
-
         public DataTable GetOrders()
         {
-            using (SqlConnection connection = new SqlConnection(sqlConnectionStringBuilder.ConnectionString))
-            {
-                string query = @"SELECT * FROM Orders";
-                using (SqlDataAdapter dataAdapter = new SqlDataAdapter(query,connection))
-                {
-                    DataTable dataTable = new DataTable();
-                    DataSet dataSet = new DataSet();
-
-                    dataAdapter.Fill(dataSet, "Orders");
-                    dataTable = dataSet.Tables["Orders"];
-                    return dataTable;
-                }
-
-            }
-            
+            return ToDataTable(_context.Orders.ToList());
         }
 
         public DataTable GetCustomers()
         {
-            using (MySqlConnection connection = new MySqlConnection(mySqlConnectionStringBuilder.ConnectionString))
-            {
-                string query = @"SELECT * FROM Users";
-                using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(query, connection))
-                {
-                    DataTable dataTable = new DataTable();
-                    DataSet dataSet = new DataSet();
-
-                    dataAdapter.Fill(dataSet, "Customers");
-                    dataTable = dataSet.Tables["Customers"];
-                    return dataTable;
-                }
-
-            }
-
+            return ToDataTable(_context.Customers.ToList());
         }
 
-        public void AddOrder(DataRow order, out string message)
+        public void AddOrder(Order order, out string message)
         {
             message = string.Empty;
             try
             {
-                using (SqlConnection connection = new SqlConnection(sqlConnectionStringBuilder.ConnectionString))
-                {
-                    connection.Open();
-                    SqlCommand command = new SqlCommand()
-                    {
-                        Connection = connection,
-                        CommandText = @"INSERT Orders
-                                        VALUES (@Email, @Code, @Nameing)"
-                    };
-                    command.Parameters.AddWithValue("@Email", order.ItemArray[1].ToString());
-                    command.Parameters.AddWithValue("@Code", order.ItemArray[2]);
-                    command.Parameters.AddWithValue("@Nameing", order.ItemArray[3].ToString());
-                    command.ExecuteNonQuery();
-                }
+                _context.Orders.Add(order);
             }
-            catch (Exception exc)
+            catch (Exception ex)
             {
-                message = exc.Message;
+                message = ex.Message;
             }
             
         }
 
-        public void AddCustomer(DataRow customer, out string message)
+        public void AddCustomer(Customer customer, out string message)
         {
             message = string.Empty;
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(mySqlConnectionStringBuilder.ConnectionString))
-                {
-                    connection.Open();
-                    MySqlCommand command = new MySqlCommand()
-                    {
-                        Connection = connection,
-                        CommandText = @"INSERT Users(Email, LastName, FirstName, MiddleName, Phone)
-                                             VALUES (@Email, @LastName, @FirstName, @MiddleName, @Phone)"
-                    };
-                    command.Parameters.AddWithValue("@Email", customer.ItemArray[0].ToString());
-                    command.Parameters.AddWithValue("@LastName", customer.ItemArray[1].ToString());
-                    command.Parameters.AddWithValue("@FirstName", customer.ItemArray[2].ToString());
-                    command.Parameters.AddWithValue("@MiddleName", customer.ItemArray[3].ToString());
-                    command.Parameters.AddWithValue("@Phone", customer.ItemArray[4].ToString());
-                    command.ExecuteNonQuery();
-
-                }
-                
+                _context.Customers.Add(customer);
             }
-            catch (Exception exc)
+            catch (Exception ex)
             {
-                message = exc.Message;
+                message = ex.Message;
             }
 
         }
 
-        public void UpdateCustomer(DataRow customer, out string message)
+        public void UpdateCustomer(Customer customer, out string message)
         {
             message = string.Empty;
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(mySqlConnectionStringBuilder.ConnectionString))
-                {
-                    connection.Open();
-                    MySqlCommand command = new MySqlCommand()
-                    {
-                        Connection = connection,
-                        CommandText = @"UPDATE Users
-                                           SET Email = @Email,
-                                               LastName = @LastName,
-                                               FirstName = @FirstName,
-                                               MiddleName = @MiddleName,
-                                               Phone = @Phone
-                                         WHERE Email = @Email"
-                    };
-                    command.Parameters.AddWithValue("@Email", customer.ItemArray[0].ToString());
-                    command.Parameters.AddWithValue("@LastName", customer.ItemArray[1].ToString());
-                    command.Parameters.AddWithValue("@FirstName", customer.ItemArray[2].ToString());
-                    command.Parameters.AddWithValue("@MiddleName", customer.ItemArray[3].ToString());
-                    command.Parameters.AddWithValue("@Phone", customer.ItemArray[4].ToString());
-                    command.ExecuteNonQuery();
-                }
+                _context.Customers.Update(customer);
             }
-            catch (Exception exc)
+            catch (Exception ex)
             {
-                message = exc.Message;
+                message = ex.Message;       
             }
         }
 
-        public void UpdateOrder(DataRow order, out string message)
+        public void UpdateOrder(Order order, out string message)
         {
             message = string.Empty;
             try
             {
-                using (SqlConnection connection = new SqlConnection(sqlConnectionStringBuilder.ConnectionString))
-                {
-                    connection.Open();
-                    SqlCommand command = new SqlCommand()
-                    {
-                        Connection = connection,
-                        CommandText = @"UPDATE Orders
-                                       SET Id = @Id,
-                                           Email = @Email,
-                                           Code = @Code,
-                                           Nameing = @Nameing
-                                     WHERE Id = @Id
-                                       AND Email = @Email"
-                    };
-                    command.Parameters.AddWithValue("@Id", order.ItemArray[0].ToString());
-                    command.Parameters.AddWithValue("@Email", order.ItemArray[1].ToString());
-                    command.Parameters.AddWithValue("@Code", order.ItemArray[2].ToString());
-                    command.Parameters.AddWithValue("@Nameing", order.ItemArray[3].ToString());
-                    command.ExecuteNonQuery();
-                }
+                _context.Orders.Update(order);
             }
             catch (Exception ex)
             {
@@ -220,22 +84,26 @@ namespace OnlineShop_CL.Services
             }
         }
 
-        public void DeleteCustomer(DataRow customer, out string message)
+        public void DeleteCustomer(Customer customer, out string message)
         {
             message = string.Empty;
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(mySqlConnectionStringBuilder.ConnectionString))
-                {
-                    connection.Open();
-                    MySqlCommand command = new MySqlCommand()
-                    {
-                        Connection = connection,
-                        CommandText = @"DELETE FROM Users WHERE Email = @Email"
-                    };
-                    command.Parameters.AddWithValue("@Email", customer.ItemArray[0].ToString());
-                    command.ExecuteNonQuery();
-                }
+                _context.Customers.Remove(customer);
+            }
+            catch (Exception ex)
+            {
+                message = ex.Message;
+            }
+
+        }
+
+        public void DeleteOrder(Order order, out string message)
+        {
+            message = string.Empty;
+            try
+            {
+                _context.Orders.Remove(order);
             }
             catch (Exception ex)
             {
@@ -243,26 +111,24 @@ namespace OnlineShop_CL.Services
             }
         }
 
-        public void DeleteOrder(DataRow order, out string message)
+        static DataTable ToDataTable<T>(IEnumerable<T> items)
         {
-            message = string.Empty;
-            try
+            var dataTable = new DataTable(typeof(T).Name);
+            PropertyInfo[] properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            foreach (PropertyInfo property in properties)
             {
-                using (SqlConnection connection = new SqlConnection(sqlConnectionStringBuilder.ConnectionString))
-                {
-                    connection.Open();
-                    SqlCommand command = new SqlCommand()
-                    {
-                        Connection = connection,
-                        CommandText = @"DELETE FROM Orders WHERE Id = @Id
-                                                             AND Email = @Email"
-                    };
-                    command.Parameters.AddWithValue("@Id", order.ItemArray[0].ToString());
-                    command.Parameters.AddWithValue("@Email", order.ItemArray[1].ToString());
-                    command.ExecuteNonQuery();
-                }
+                dataTable.Columns.Add(property.Name, Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType);
             }
-            catch (Exception ex) { message = ex.Message; }
+            foreach (T item in items)
+            {
+                var row = dataTable.NewRow();
+                foreach (PropertyInfo property in properties)
+                {
+                    row[property.Name] = property.GetValue(item) ?? DBNull.Value;
+                }
+                dataTable.Rows.Add(row);
+            }
+            return dataTable;
         }
 
     }
