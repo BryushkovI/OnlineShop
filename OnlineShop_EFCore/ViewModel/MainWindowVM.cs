@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop_CL;
 using OnlineShop_CL.Services;
+using OnlineShop_CL.Model;
 
 namespace OnlineShop_EFCore.ViewModel
 {
@@ -54,7 +55,7 @@ namespace OnlineShop_EFCore.ViewModel
         }
 
         DataTable _dataTableNewCutomer;
-        public DataTable DataTableNewCutomer
+        public DataTable DataTableNewCustomer
         {
             get => _dataTableNewCutomer;
             set => Set(ref _dataTableNewCutomer, value);
@@ -97,13 +98,13 @@ namespace OnlineShop_EFCore.ViewModel
                 case DataRowAction.Delete:
                     if (!string.IsNullOrEmpty(e.Row.ItemArray[0].ToString()))
                     {
-                        dataProvider.DeleteCustomer(e.Row, out message);
+                        dataProvider.DeleteCustomer(new Customer(e.Row), out message);
                     }
                     break;
                 case DataRowAction.Change:
                     if (!string.IsNullOrEmpty(e.Row.ItemArray[0].ToString()))
                     {
-                        dataProvider.UpdateCustomer(e.Row, out message);
+                        dataProvider.UpdateCustomer(new Customer(e.Row), out message);
                     }
                     break;
                 default:
@@ -116,22 +117,22 @@ namespace OnlineShop_EFCore.ViewModel
             }
         }
 
-        private void DataTableNewCutomer_RowAdded(object sender, DataRowChangeEventArgs e)
+        private void DataTableNewCustomer_RowAdded(object sender, DataRowChangeEventArgs e)
         {
             string message = string.Empty;
 
             switch (e.Action)
             {
                 case DataRowAction.Add:
-                    if (!string.IsNullOrEmpty(e.Row.ItemArray[0].ToString()))
+                    if (!string.IsNullOrEmpty(e.Row.ItemArray[1].ToString()))
                     {
-                        dataProvider.AddCustomer(e.Row, out message);
+                        dataProvider.AddCustomer(new Customer(e.Row), out message);
                         if (_dataTableNewCutomer.Rows != null || message != string.Empty)
                         {
                             _dataTableCustomers.Rows.Add(_dataTableNewCutomer.Rows[0].ItemArray);
                             OnPropertyChanged(nameof(DataTableCustomers));
                             _dataTableNewCutomer.Rows.Clear();
-                            OnPropertyChanged(nameof(DataTableNewCutomer));
+                            OnPropertyChanged(nameof(DataTableNewCustomer));
                         }
                     }
                     break;
@@ -153,13 +154,13 @@ namespace OnlineShop_EFCore.ViewModel
                 case DataRowAction.Delete:
                     if (!string.IsNullOrEmpty(e.Row.ItemArray[1].ToString()))
                     {
-                        dataProvider.DeleteOrder(e.Row, out message);
+                        dataProvider.DeleteOrder(new Order(e.Row), out message);
                     }
                     break;
                 case DataRowAction.Change:
                     if (!string.IsNullOrEmpty(e.Row.ItemArray[1].ToString()))
                     {
-                        dataProvider.UpdateOrder(e.Row, out message);
+                        dataProvider.UpdateOrder(new Order(e.Row), out message);
                     }
                     break;
                 default:
@@ -181,7 +182,7 @@ namespace OnlineShop_EFCore.ViewModel
                 case DataRowAction.Add:
                     if (!string.IsNullOrEmpty(e.Row.ItemArray[1].ToString()))
                     {
-                        dataProvider.AddOrder(e.Row, out message);
+                        dataProvider.AddOrder(new Order(e.Row), out message);
                         if (_dataTableNewOrder.Rows != null || message != string.Empty)
                         {
                             _dataTableOrders.Rows.Add(_dataTableNewOrder.Rows[0].ItemArray);
@@ -222,26 +223,26 @@ namespace OnlineShop_EFCore.ViewModel
             _dataTableCustomers = dataProvider.GetCustomers();
             _dataTableNewCutomer = _dataTableCustomers.Clone();
             OnPropertyChanged(nameof(DataTableCustomers));
-            OnPropertyChanged(nameof(DataTableNewCutomer));
-            //DataTableCustomers.RowChanged += DataTableCustomers_RowChanged;
-            //DataTableNewCutomer.RowChanged += DataTableNewCutomer_RowAdded;
-            //DataTableOrders.RowChanged += DataTableOrders_RowChanged;
-            //DataTableNewOrder.RowChanged += DataTableNewOrder_RowAdded;
-            //DataTableCustomers.RowDeleting += DataTableCustomers_RowChanged;
-            //DataTableOrders.RowDeleting += DataTableOrders_RowChanged;
+            OnPropertyChanged(nameof(DataTableNewCustomer));
+            DataTableCustomers.RowChanged += DataTableCustomers_RowChanged;
+            DataTableNewCustomer.RowChanged += DataTableNewCustomer_RowAdded;
+            DataTableOrders.RowChanged += DataTableOrders_RowChanged;
+            DataTableNewOrder.RowChanged += DataTableNewOrder_RowAdded;
+            DataTableCustomers.RowDeleting += DataTableCustomers_RowChanged;
+            DataTableOrders.RowDeleting += DataTableOrders_RowChanged;
         }
         void GetOrders()
         {
-            //DataTableOrders = dataProvider.GetOrders();
-            //DataTableOrders.RowChanged += DataTableOrders_RowChanged;
-            //DataTableOrders.RowDeleting += DataTableOrders_RowChanged;
+            DataTableOrders = dataProvider.GetOrders();
+            DataTableOrders.RowChanged += DataTableOrders_RowChanged;
+            DataTableOrders.RowDeleting += DataTableOrders_RowChanged;
         }
 
         void GetCustomers()
         {
-            //DataTableCustomers = dataProvider.GetCustomers();
-            //DataTableCustomers.RowChanged += DataTableCustomers_RowChanged;
-            //DataTableCustomers.RowDeleting += DataTableCustomers_RowChanged;
+            DataTableCustomers = dataProvider.GetCustomers();
+            DataTableCustomers.RowChanged += DataTableCustomers_RowChanged;
+            DataTableCustomers.RowDeleting += DataTableCustomers_RowChanged;
         }
 
 

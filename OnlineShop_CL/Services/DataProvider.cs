@@ -36,6 +36,7 @@ namespace OnlineShop_CL.Services
             try
             {
                 _context.Orders.Add(order);
+                _context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -50,6 +51,7 @@ namespace OnlineShop_CL.Services
             try
             {
                 _context.Customers.Add(customer);
+                _context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -58,12 +60,18 @@ namespace OnlineShop_CL.Services
 
         }
 
-        public void UpdateCustomer(Customer customer, out string message)
+        public void UpdateCustomer(Customer newCustomer, out string message)
         {
             message = string.Empty;
             try
             {
+                var customer = _context.Customers.Single(c => c.Id == newCustomer.Id);
+                customer.FirstName = newCustomer.FirstName;
+                customer.LastName = newCustomer.LastName;
+                customer.MiddleName = newCustomer.MiddleName;
+                customer.Phone = newCustomer.Phone;
                 _context.Customers.Update(customer);
+                _context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -71,12 +79,16 @@ namespace OnlineShop_CL.Services
             }
         }
 
-        public void UpdateOrder(Order order, out string message)
+        public void UpdateOrder(Order newOrder, out string message)
         {
             message = string.Empty;
             try
             {
+                var order = _context.Orders.Single(o => o.Id == newOrder.Id);
+                order.Code = newOrder.Code;
+                order.Nameing = newOrder.Nameing;
                 _context.Orders.Update(order);
+                _context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -89,7 +101,8 @@ namespace OnlineShop_CL.Services
             message = string.Empty;
             try
             {
-                _context.Customers.Remove(customer);
+                _context.Customers.Remove(_context.Customers.Single(c => c.Id == customer.Id));
+                _context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -103,7 +116,8 @@ namespace OnlineShop_CL.Services
             message = string.Empty;
             try
             {
-                _context.Orders.Remove(order);
+                _context.Orders.Remove(_context.Orders.Single(o => o.Id == order.Id));
+                _context.SaveChanges();
             }
             catch (Exception ex)
             {

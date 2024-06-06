@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,27 @@ namespace OnlineShop_CL.Model
         public Customer()
         {
                 
+        }
+
+        public Customer(DataRow row)
+        {
+            try
+            {
+                if (int.TryParse(row.ItemArray[0].ToString(), out _id))
+                {
+                    Id = _id;
+                }
+                Email = row.ItemArray[4].ToString();
+                LastName = row.ItemArray[2].ToString();
+                FirstName = row.ItemArray[1].ToString();
+                MiddleName = row.ItemArray[3].ToString();
+                Phone = row.ItemArray[5].ToString();
+            }
+            catch (Exception)
+            {
+
+            }
+
         }
 
         int _id;
@@ -56,6 +78,28 @@ namespace OnlineShop_CL.Model
         {
             
         }
+
+        public Order(DataRow row)
+        {
+            try
+            {
+                if (int.TryParse(row.ItemArray[0].ToString(), out _id))
+                {
+                    Id = _id;
+                }
+                Email = row.ItemArray[1].ToString();
+                if (int.TryParse(row.ItemArray[2].ToString(), out _code))
+                {
+                    Code = _code;
+                }
+                Nameing = row.ItemArray[3].ToString();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         int _id;
         public int Id { get => _id; set => _id = value; }
 
