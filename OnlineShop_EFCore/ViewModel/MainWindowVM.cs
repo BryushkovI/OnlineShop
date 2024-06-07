@@ -99,6 +99,10 @@ namespace OnlineShop_EFCore.ViewModel
                     if (!string.IsNullOrEmpty(e.Row.ItemArray[0].ToString()))
                     {
                         dataProvider.DeleteCustomer(new Customer(e.Row), out message);
+                        if (string.IsNullOrEmpty(message))
+                        {
+                            GetOrders();
+                        }
                     }
                     break;
                 case DataRowAction.Change:
@@ -124,7 +128,7 @@ namespace OnlineShop_EFCore.ViewModel
             switch (e.Action)
             {
                 case DataRowAction.Add:
-                    if (!string.IsNullOrEmpty(e.Row.ItemArray[1].ToString()))
+                    if (!string.IsNullOrEmpty(e.Row.ItemArray[0].ToString()))
                     {
                         dataProvider.AddCustomer(new Customer(e.Row), out message);
                         if (_dataTableNewCutomer.Rows != null || message != string.Empty)

@@ -45,12 +45,12 @@
                                   AutoGenerateColumns="False" CanUserAddRows="False"
                                   VerticalScrollBarVisibility="Auto">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Почта" Binding="{Binding Path=[4]}" IsReadOnly="True"
+                                <DataGridTextColumn Header="Почта" Binding="{Binding Path=[0]}" IsReadOnly="True"
                                                     Width="150"/>
-                                <DataGridTextColumn Header="Фамилия" Binding="{Binding Path=[2]}" Width="100"/>
-                                <DataGridTextColumn Header="Имя" Binding="{Binding Path=[1]}" Width="100"/>
+                                <DataGridTextColumn Header="Фамилия" Binding="{Binding Path=[1]}" Width="100"/>
+                                <DataGridTextColumn Header="Имя" Binding="{Binding Path=[2]}" Width="100"/>
                                 <DataGridTextColumn Header="Отчество" Binding="{Binding Path=[3]}" Width="100"/>
-                                <DataGridTextColumn Header="Телефон" Binding="{Binding Path=[5]}" Width="100"/>
+                                <DataGridTextColumn Header="Телефон" Binding="{Binding Path=[4]}" Width="100"/>
                             </DataGrid.Columns>
                             <!--<DataGrid.CellStyle>
         <Style TargetType="DataGridCell">
@@ -79,11 +79,11 @@
                                   AutoGenerateColumns="False" CanUserAddRows="True" HeadersVisibility="Row"
                                   VerticalScrollBarVisibility="Auto">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Binding="{Binding Path=[4]}" Width="150"/>
+                                <DataGridTextColumn Binding="{Binding Path=[0]}" Width="150"/>
                                 <DataGridTextColumn Binding="{Binding Path=[1]}" Width="100"/>
                                 <DataGridTextColumn Binding="{Binding Path=[2]}" Width="100"/>
                                 <DataGridTextColumn Binding="{Binding Path=[3]}" Width="100"/>
-                                <DataGridTextColumn Binding="{Binding Path=[5]}" Width="100"/>
+                                <DataGridTextColumn Binding="{Binding Path=[4]}" Width="100"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </StackPanel>

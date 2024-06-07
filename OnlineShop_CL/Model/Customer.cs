@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -19,15 +20,11 @@ namespace OnlineShop_CL.Model
         {
             try
             {
-                if (int.TryParse(row.ItemArray[0].ToString(), out _id))
-                {
-                    Id = _id;
-                }
-                Email = row.ItemArray[4].ToString();
-                LastName = row.ItemArray[2].ToString();
-                FirstName = row.ItemArray[1].ToString();
+                Email = row.ItemArray[0].ToString();
+                LastName = row.ItemArray[1].ToString();
+                FirstName = row.ItemArray[2].ToString();
                 MiddleName = row.ItemArray[3].ToString();
-                Phone = row.ItemArray[5].ToString();
+                Phone = row.ItemArray[4].ToString();
             }
             catch (Exception)
             {
@@ -36,13 +33,10 @@ namespace OnlineShop_CL.Model
 
         }
 
-        int _id;
-        public int Id { get => _id; set => _id = value; }
-
-        string _firstName;
-        public string FirstName
+        string _email;
+        public string Email
         {
-            get => _firstName; set => _firstName = value;
+            get => _email; set => _email = value;
         }
 
         string _lastName;
@@ -51,16 +45,16 @@ namespace OnlineShop_CL.Model
             get => _lastName; set => _lastName = value;
         }
 
+        string _firstName;
+        public string FirstName
+        {
+            get => _firstName; set => _firstName = value;
+        }
+
         string _middleName;
         public string MiddleName
         {
             get => _middleName; set => _middleName = value;
-        }
-
-        string _email;
-        public string Email
-        {
-            get => _email; set => _email = value;
         }
 
         string _phone;
@@ -68,6 +62,8 @@ namespace OnlineShop_CL.Model
         {
             get => _phone; set => _phone = value;
         }
+
+        public List<Order> Orders { get; set; } = new();
 
         public event PropertyChangedEventHandler PropertyChanged;
     }
@@ -120,6 +116,8 @@ namespace OnlineShop_CL.Model
         {
             get => _nameing; set => _nameing = value;
         }
+
+        public Customer? Customer { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

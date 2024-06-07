@@ -15,7 +15,7 @@ namespace OnlineShop_CL.Services
 {
     public class DataProvider
     {
-        Context _context;
+        readonly Context _context;
         public DataProvider(Context context)
         {
             _context = context;
@@ -65,7 +65,7 @@ namespace OnlineShop_CL.Services
             message = string.Empty;
             try
             {
-                var customer = _context.Customers.Single(c => c.Id == newCustomer.Id);
+                var customer = _context.Customers.Single(c => c.Email == newCustomer.Email);
                 customer.FirstName = newCustomer.FirstName;
                 customer.LastName = newCustomer.LastName;
                 customer.MiddleName = newCustomer.MiddleName;
@@ -101,7 +101,7 @@ namespace OnlineShop_CL.Services
             message = string.Empty;
             try
             {
-                _context.Customers.Remove(_context.Customers.Single(c => c.Id == customer.Id));
+                _context.Customers.Remove(_context.Customers.Single(c => c.Email == customer.Email));
                 _context.SaveChanges();
             }
             catch (Exception ex)
