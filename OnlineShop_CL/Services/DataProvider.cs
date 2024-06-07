@@ -30,6 +30,11 @@ namespace OnlineShop_CL.Services
             return ToDataTable(_context.Customers.ToList());
         }
 
+        public bool IsConnected()
+        {
+            return _context.Database.CanConnect();
+        }
+
         public void AddOrder(Order order, out string message)
         {
             message = string.Empty;

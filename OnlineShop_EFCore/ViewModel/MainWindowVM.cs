@@ -213,10 +213,9 @@ namespace OnlineShop_EFCore.ViewModel
             OnPropertyChanged(nameof(Logs));
         }
 
-        private void Login()
+        private void Login(Context context)
         {
             MainWindowsVisibility = Visibility.Visible;
-            context = new();
             dataProvider = new(context);
             loggable.OnLog("Подключено со строкой: {0}", [context.Database.GetConnectionString()]);
             EnteranceVM = null;

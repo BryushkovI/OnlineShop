@@ -15,6 +15,7 @@ namespace OnlineShop_CL.Services
         public Context()
         {
             Database.EnsureCreated();
+            
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
